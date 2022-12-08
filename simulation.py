@@ -7,54 +7,40 @@ from virus import Virus
 
 class Simulation(object):
     def __init__(self, virus, pop_size, vacc_percentage, initial_infected=1):
-        # TODO: Create a Logger object and bind it to self.logger.
-        # Remember to call the appropriate logger method in the corresponding parts of the simulation.
         self.virus = virus
         self.pop_size = pop_size
         self.vacc_percentage = vacc_percentage
         self.initial_infected = initial_infected
-        self.people_list = []
+
+        self.logger = Logger("test-logger.txt")
+        self.population = self._create_population()
+        self.newly_infected_list = []
         self.dead_people_list = []
 
-
-        self.file_name = (f"{virus.name} logger.txt")
-        self.log = Logger(self.file_name)
-        
-        # TODO: Store the virus in an attribute
-        # TODO: Store pop_size in an attribute
-        # TODO: Store the vacc_percentage in a variable
-        # TODO: Store initial_infected in a variable
-        # You need to store a list of people (Person instances)
-        # Some of these people will be infected some will not. 
-        # Use the _create_population() method to create the list and 
-        # return it storing it in an attribute here. 
-        # TODO: Call self._create_population() and pass in the correct parameters.
+        self.total_infected = 0
+        self.total_dead = 0
 
     def _create_population(self):
+        """
+        creates population based on population data
+        """
+        population_list = []
+
         for i in range(self.pop_size):
-            self.people_list.append(Person(i, False))
+            population_list.append(Person(i, False))
 
-        self.log.write_metadata(self.pop_size, vacc_percentage, virus_name, )
-        return self.people_list
-
-
-        # TODO: Create a list of people (Person instances). This list 
-        # should have a total number of people equal to the pop_size. 
-        # Some of these people will be uninfected and some will be infected.
-        # The number of infected people should be equal to the the initial_infected
-        # TODO: Return the list of people
+        self.logger.write_metadata(self.pop_size, self.vacc_percentage, virus.name, mortality_rate, repro_num)
+        return population_list
 
     def _simulation_should_continue(self):
-        # This method will return a booleanb indicating if the simulation 
-        # should continue. 
-        # The simulation should not continue if all of the people are dead, 
-        # or if all of the living people have been vaccinated. 
-        # TODO: Loop over the list of people in the population. Return True
-        # if the simulation should continue or False if not.
-        if len(self.people_list) == 0:
-            return False
-        else:
-            return False
+        """
+        checks to see if the simulation should continue or not
+        """
+        for person in self.population:
+            if person.is_alive == True and person.is_vaccinated == False:
+                return True
+            else:
+                return False
             
 
     def run(self):
@@ -66,12 +52,15 @@ class Simulation(object):
         should_continue = True
 
         while should_continue:
+            self.time_step()
+            should_continue = self._simulation_should_continue()
+            time_step_counter += 1
+
             # TODO: Increment the time_step_counter
             # TODO: for every iteration of this loop, call self.time_step() 
             # Call the _simulation_should_continue method to determine if 
             # the simulation should continue
-            should_continue = self._simulation_should_continue()
-            pass
+        print(f"Time steps: {time_step_counter}")
 
         # TODO: Write meta data to the logger. This should be starting 
         # statistics for the simulation. It should include the initial
@@ -119,10 +108,14 @@ class Simulation(object):
             
 
     def _infect_newly_infected(self):
-        # TODO: Call this method at the end of every time step and infect each Person.
-        # TODO: Once you have iterated through the entire list of self.newly_infected, remember
-        # to reset self.newly_infected back to an empty list.
-        pass
+        """
+        infects everyone in list then clears list
+        """
+        for person in self.newly_infected_list:
+            person.infection = self.virus
+            self.total_infected += 1
+
+        self.newly_infected_list = []
 
 
 if __name__ == "__main__":
@@ -138,7 +131,7 @@ if __name__ == "__main__":
     initial_infected = 10
 
     # Make a new instance of the imulation
-    virus = Virus(virus, pop_size, vacc_percentage, initial_infected)
-    sim = Simulation(pop_size, vacc_percentage, initial_infected, virus)
+    virus = Virus(virus, vacc_percentage, initial_infected)
+    sim = Simulation(virus, pop_size, vacc_percentage, initial_infected)
 
     # sim.run()
