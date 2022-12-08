@@ -24,12 +24,6 @@ class Logger(object):
 
     def write_metadata(self, virus_name, pop_size, vacc_percentage, mortality_rate,
                        basic_repro_num):
-        # TODO: Finish this method. This line of metadata should be tab-delimited
-        # it should create the text file that we will store all logs in.
-        # TIP: Use 'w' mode when you open the file. For all other methods, use
-        # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
-        # NOTE: Make sure to end every line with a '/n' character to ensure that each
-        # event logged ends up on a separate line!
         log = open(self.file_name, "w")
 
         log.write("Welcome to herd immunity simulator!\n")

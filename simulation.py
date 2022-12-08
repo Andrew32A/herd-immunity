@@ -17,8 +17,11 @@ class Simulation(object):
         self.newly_infected_list = []
         self.dead_people_list = []
 
+        self.total_vaccinated = 0
         self.total_infected = 0
         self.total_dead = 0
+        self.total_interactions = 0
+        self.total_lives_saved_with_vaccine = 0
 
     def _create_population(self):
         """
@@ -69,43 +72,45 @@ class Simulation(object):
         # TODO: When the simulation completes you should conclude this with 
         # the logger. Send the final data to the logger. 
 
-    def time_step(self):
-        # This method will simulate interactions between people, calulate 
-        # new infections, and determine if vaccinations and fatalities from infections
-        # The goal here is have each infected person interact with a number of other 
-        # people in the population
-        # TODO: Loop over your population
-        # For each person if that person is infected
-        # have that person interact with 100 other living people 
-        # Run interactions by calling the interaction method below. That method
-        # takes the infected person and a random person
-        for people in self.people_list():
-            people.interaction()
-            people._infect_newly_infected()
+    def random_person_grabber(self):
+        random_person_grab = random.choice(self.population)
+        while random_person_grab.is_alive == False:
+            random_person_grab = random.choice(self.population)
+        return random_person_grab
 
-        # RUN LOGGER HERE
+
+    def time_step(self):
+        for person in self.population:
+            if person.infection is not None and person.is_alive == True:
+                for _ in range(100):
+                    self.interaction(person, self.random_person_grabber())
+
+                if person.did_survive_infection() == True:
+                    person.is_vaccinated = True
+                    person.infection = None
+                    self.total_infected -= 1
+                    self.total_vaccinated += 1
+
+                    self.logger.log_infection_survival(person, True)
+                else:
+                    person.is_alive = False
+                    self.total_dead += 1
+                    self.total_vaccinated += 1
+                    self.total_dead -= 1
+
+                    self.logger.log_infection_survival(person, False)
+
+        self.logger.log_time_step() # finish later
+        self._infect_newly_infected()
 
     def interaction(self, infected_person, random_person):
-        # TODO: Finish this method.
-        # The possible cases you'll need to cover are listed below:
-            # random_person is vaccinated:
-            #     nothing happens to random person.
-            # random_person is already infected:
-            #     nothing happens to random person.
-            # random_person is healthy, but unvaccinated:
-            #     generate a random number between 0.0 and 1.0.  If that number is smaller
-            #     than repro_rate, add that person to the newly infected array
-            #     Simulation object's newly_infected array, so that their infected
-            #     attribute can be changed to True at the end of the time step.
-        # TODO: Call logger method during this method.
+        self.total_interactions += 1
+
         if random_person.is_vaccinated == True:
-            ...
-        elif random_person.infection == True:
-            ...
-        elif random_person.is_vaccinated == False:
-            # todo later
-            ...
-            
+            self.total_lives_saved_with_vaccine += 1
+        elif random_person.is_vaccinated == False and random_person.infection == None:
+            if random.random() < virus.repro_rate: # random num is chance of infection
+                self.newly_infected_list.append(random_person)
 
     def _infect_newly_infected(self):
         """
