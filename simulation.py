@@ -13,6 +13,12 @@ class Simulation(object):
         self.pop_size = pop_size
         self.vacc_percentage = vacc_percentage
         self.initial_infected = initial_infected
+        self.people_list = []
+        self.dead_people_list = []
+
+
+        self.file_name = (f"{virus.name} logger.txt")
+        self.log = Logger(self.file_name)
         
         # TODO: Store the virus in an attribute
         # TODO: Store pop_size in an attribute
@@ -23,18 +29,20 @@ class Simulation(object):
         # Use the _create_population() method to create the list and 
         # return it storing it in an attribute here. 
         # TODO: Call self._create_population() and pass in the correct parameters.
-        pass
 
     def _create_population(self):
-        people_list = []
-        for i in range(pop_size):
-            people_list.append(Person(i, False))
+        for i in range(self.pop_size):
+            self.people_list.append(Person(i, False))
+
+        self.log.write_metadata(self.pop_size, vacc_percentage, virus_name, )
+        return self.people_list
+
+
         # TODO: Create a list of people (Person instances). This list 
         # should have a total number of people equal to the pop_size. 
         # Some of these people will be uninfected and some will be infected.
         # The number of infected people should be equal to the the initial_infected
         # TODO: Return the list of people
-        pass
 
     def _simulation_should_continue(self):
         # This method will return a booleanb indicating if the simulation 
@@ -43,7 +51,11 @@ class Simulation(object):
         # or if all of the living people have been vaccinated. 
         # TODO: Loop over the list of people in the population. Return True
         # if the simulation should continue or False if not.
-        pass
+        if len(self.people_list) == 0:
+            return False
+        else:
+            return False
+            
 
     def run(self):
         # This method starts the simulation. It should track the number of 
@@ -78,7 +90,11 @@ class Simulation(object):
         # have that person interact with 100 other living people 
         # Run interactions by calling the interaction method below. That method
         # takes the infected person and a random person
-        pass
+        for people in self.people_list():
+            people.interaction()
+            people._infect_newly_infected()
+
+        # RUN LOGGER HERE
 
     def interaction(self, infected_person, random_person):
         # TODO: Finish this method.
@@ -93,7 +109,14 @@ class Simulation(object):
             #     Simulation object's newly_infected array, so that their infected
             #     attribute can be changed to True at the end of the time step.
         # TODO: Call logger method during this method.
-        pass
+        if random_person.is_vaccinated == True:
+            ...
+        elif random_person.infection == True:
+            ...
+        elif random_person.is_vaccinated == False:
+            # todo later
+            ...
+            
 
     def _infect_newly_infected(self):
         # TODO: Call this method at the end of every time step and infect each Person.

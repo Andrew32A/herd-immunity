@@ -1,9 +1,10 @@
+from person import Person
+
 class Logger(object):
     def __init__(self, file_name):
         # TODO:  Finish this initialization method. The file_name passed should be the
         # full file name of the file that the logs will be written to.
         self.file_name = file_name
-        pass
 
     # The methods below are just suggestions. You can rearrange these or 
     # rewrite them to better suit your code style. 
@@ -21,7 +22,7 @@ class Logger(object):
     #   The population size, the number of living, the number of dead, the number 
     #   of vaccinated, and the number of steps to reach the end of the simulation. 
 
-    def write_metadata(self, pop_size, vacc_percentage, virus_name, mortality_rate,
+    def write_metadata(self, virus_name, pop_size, vacc_percentage, mortality_rate,
                        basic_repro_num):
         # TODO: Finish this method. This line of metadata should be tab-delimited
         # it should create the text file that we will store all logs in.
@@ -29,7 +30,15 @@ class Logger(object):
         # the 'a' mode to append a new log to the end, since 'w' overwrites the file.
         # NOTE: Make sure to end every line with a '/n' character to ensure that each
         # event logged ends up on a separate line!
-        pass
+        log = open(self.file_name, "w")
+
+        log.write("Welcome to herd immunity simulator!\n")
+        log.write(f"Initial population size: {pop_size}\n")
+        log.write(f"Percentage vaccinated {vacc_percentage}\n")
+        # log.write(f"Initially infected: {basic_repro_num}\n")
+        log.write(f"Virus name: {virus_name}\n")
+        log.write(f"Reproduction rate {basic_repro_num}\n")
+        log.write(f"Virus mortality rate: {mortality_rate}\n")
 
     def log_interactions(self, step_number, number_of_interactions, number_of_new_infections):
         # TODO: Finish this method. Think about how the booleans passed (or not passed)
