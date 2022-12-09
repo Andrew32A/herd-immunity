@@ -22,8 +22,7 @@ class Logger(object):
     #   The population size, the number of living, the number of dead, the number 
     #   of vaccinated, and the number of steps to reach the end of the simulation. 
 
-    def write_metadata(self, virus_name, pop_size, vacc_percentage, mortality_rate,
-                       basic_repro_num):
+    def write_metadata(self, virus_name, pop_size, vacc_percentage, mortality_rate, basic_repro_num):
         log = open(self.file_name, "w")
 
         log.write("Welcome to herd immunity simulator!\n")
@@ -34,12 +33,17 @@ class Logger(object):
         log.write(f"Reproduction rate {basic_repro_num}\n")
         log.write(f"Virus mortality rate: {mortality_rate}\n")
 
+        log.close()
+
     def log_interactions(self, step_number, number_of_interactions, number_of_new_infections):
         # TODO: Finish this method. Think about how the booleans passed (or not passed)
         # represent all the possible edge cases. Use the values passed along with each person,
         # along with whether they are sick or vaccinated when they interact to determine
         # exactly what happened in the interaction and create a String, and write to your logfile.
-        pass
+        log = open(self.file_name, "a")
+        log.write(f"hello world")
+
+        log.close()
 
     def log_infection_survival(self, step_number, population_count, number_of_new_fatalities):
         # TODO: Finish this method. If the person survives, did_die_from_infection
@@ -49,4 +53,7 @@ class Logger(object):
 
     def log_time_step(self, time_step_number):
         # 
-        pass
+        log = open(self.file_name, "a")
+        log.write(f"{time_step_number}")
+
+        log.close()
