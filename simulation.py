@@ -119,7 +119,7 @@ class Simulation(object):
                     self.interaction(person, self.random_person_grabber())
 
                 if person.did_survive_infection() == True:
-                    # self.total_infected -= 1
+                    self.total_infected -= 1
                     person.is_vaccinated = True
                     self.total_vaccinated += 1
 
@@ -127,6 +127,7 @@ class Simulation(object):
                 else:
                     person.is_alive = False
                     self.total_dead += 1
+                    self.total_infected -= 1
                     # self.dead_people_list.append(person)
                     # self.population.remove(person)
                     # self.total_vaccinated += 1

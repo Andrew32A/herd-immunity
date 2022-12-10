@@ -1,0 +1,25 @@
+
+The final report is:
+
+What were the inputs you gave the simulation? (Population size, percent vaccinated, virus name, mortality rate, reproductive rate)
+The initial population size was: 1000.
+Vaccinated percentage was: 20%.
+Name of the virus: Sniffles.
+The mortality rate was: 0.3.
+The reproductive rate of this virus was: 0.4.
+Total initial infected: 10.
+
+What percentage of the population died from the virus?
+5%
+
+What percentage of the population became infected at some point before the virus burned out?
+0%
+
+Out of all interactions sick individuals had during the entire simulation, how many times, in total, did a vaccination save someone from potentially becoming infected?
+Total times someone was saved: 41234
+
+Total steps: 7
+Total interactions: 80000 
+Total people dead: 221
+Total vaccinated: 579
+Total infections: 0
