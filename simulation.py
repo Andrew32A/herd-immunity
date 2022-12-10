@@ -15,9 +15,10 @@ class Simulation(object):
         self.dead_people_list = []
 
         self.time_step_counter = 0
+        self.current_infected = 0
+        self.total_infected = 0
         self.vaccinated_counter = 0
         self.total_vaccinated = 0
-        self.total_infected = 0
         self.total_dead = 0
         self.total_interactions = 0
         self.total_lives_saved_with_vaccine = 0
@@ -58,6 +59,7 @@ class Simulation(object):
         # creates infected population
         for _ in range(population_infected):
             id_count += 1
+            self.current_infected += 1
             self.total_infected += 1
             person = Person(id_count, False, self.virus)
             population_list.append(person)
@@ -87,13 +89,13 @@ class Simulation(object):
             self.time_step()
             should_continue = self._simulation_should_continue()
             self.time_step_counter += 1
-            self.logger.log_interactions(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected)
+            self.logger.log_interactions(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.current_infected)
 
             if not should_continue:
-                self.logger.final_log(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected, virus, self.pop_size, self.initial_infected, self.vacc_percentage, self.total_lives_saved_with_vaccine)
+                self.logger.answers_log(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected, virus, self.pop_size, self.initial_infected, self.vacc_percentage, self.total_lives_saved_with_vaccine)
 
         print(f"Time steps: {self.time_step_counter}")
-        print(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected)    
+        print(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.current_infected)    
 
 
     def random_person_grabber(self):
@@ -116,14 +118,14 @@ class Simulation(object):
                     self.interaction(person, self.random_person_grabber())
 
                 if person.did_survive_infection() == True:
-                    self.total_infected -= 1
+                    self.current_infected -= 1
                     person.is_vaccinated = True
                     self.total_vaccinated += 1
 
                 else:
                     person.is_alive = False
                     self.total_dead += 1
-                    self.total_infected -= 1
+                    self.current_infected -= 1
 
         self._infect_newly_infected()
 
@@ -147,6 +149,7 @@ class Simulation(object):
         """
         for person in self.newly_infected_list:
             person.infection = self.virus
+            self.current_infected += 1
             self.total_infected += 1
             self.population.append(person)
 

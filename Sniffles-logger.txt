@@ -1,0 +1,49 @@
+
+Initial population size: 1000
+Percentage vaccinated: 0.2
+Virus name: Sniffles
+Reproduction rate: 0.4
+Virus mortality rate: 0.3
+Initial infected: 10
+
+Step: 1
+Total interactions: 100 
+Total people dead: 0
+Total vaccinated: 1
+Current infections: 38
+
+Step: 2
+Total interactions: 300 
+Total people dead: 1
+Total vaccinated: 2
+Current infections: 98
+
+Step: 3
+Total interactions: 700 
+Total people dead: 3
+Total vaccinated: 4
+Current infections: 208
+
+Step: 4
+Total interactions: 1600 
+Total people dead: 7
+Total vaccinated: 9
+Current infections: 403
+
+Step: 5
+Total interactions: 6600 
+Total people dead: 23
+Total vaccinated: 43
+Current infections: 719
+
+Step: 6
+Total interactions: 77000 
+Total people dead: 228
+Total vaccinated: 542
+Current infections: 30
+
+Step: 7
+Total interactions: 80000 
+Total people dead: 237
+Total vaccinated: 563
+Current infections: 0

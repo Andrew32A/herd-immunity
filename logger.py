@@ -29,27 +29,25 @@ Current infections: {total_infections}
         log.close()
 
 
-    def final_log(self, step_number, number_of_interactions, dead_people, total_vaccinated, total_infections, virus, pop_size, initial_infected, vacc_percentage, vaccine_saves):
+    def answers_log(self, step_number, number_of_interactions, dead_people, total_vaccinated, total_infections, virus, pop_size, initial_infected, vacc_percentage, vaccine_saves):
         log = open("answers.txt", "w")
         log.write(f"""
-The final report is:
-
 What were the inputs you gave the simulation? (Population size, percent vaccinated, virus name, mortality rate, reproductive rate)
-The initial population size was: {pop_size}.
-Vaccinated percentage was: {round(vacc_percentage * 100)}%.
-Name of the virus: {virus.name}.
-The mortality rate was: {virus.mortality_rate}.
-The reproductive rate of this virus was: {virus.repro_rate}.
-Total initial infected: {initial_infected}.
+Initial population size: {pop_size}
+Vaccinated percentage: {round(vacc_percentage * 100)}%
+Name of the virus: {virus.name}
+Mortality rate: {virus.mortality_rate}
+Reproductive rate of {virus.name} was: {virus.repro_rate}
+Total initial infected: {initial_infected}
 
 What percentage of the population died from the virus?
-{round(pop_size / dead_people)}%
+About {round(pop_size / dead_people)}% of the population died from the virus.
 
 What percentage of the population became infected at some point before the virus burned out?
-{round(total_infections / pop_size * 100)}%
+About {round(total_infections / pop_size * 100)}% of the population became infected at some point before the virus burnt out.
 
 Out of all interactions sick individuals had during the entire simulation, how many times, in total, did a vaccination save someone from potentially becoming infected?
-Total times someone was saved: {vaccine_saves}
+The total times a vaccine saved a sick individual was: {vaccine_saves}
 
 Total steps: {step_number}
 Total interactions: {number_of_interactions} 
