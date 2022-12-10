@@ -6,25 +6,29 @@ class Logger(object):
         log = open(self.file_name, "w")
 
         log.write(f"""
-Initial population size: {pop_size}
-Percentage vaccinated: {vacc_percentage}
-Virus name: {virus.name}
-Reproduction rate: {virus.repro_rate}
-Virus mortality rate: {virus.mortality_rate}
-Initial infected: {initial_infected}
-""")
+-------------------------------------------------------        
+|        Initial population size: {pop_size}          
+|        Percentage vaccinated: {vacc_percentage}     
+|        Virus name: {virus.name}                     
+|        Reproduction rate: {virus.repro_rate}        
+|        Virus mortality rate: {virus.mortality_rate} 
+|        Initial infected: {initial_infected}         
+-------------------------------------------------------  
+        """)
         log.close()
 
 
     def log_interactions(self, step_number, number_of_interactions, dead_people, total_vaccinated, total_infections):
         log = open(self.file_name, "a")
         to_file = f"""
-Step: {step_number}
-Total interactions: {number_of_interactions} 
-Total people dead: {dead_people}
-Total vaccinated: {total_vaccinated}
-Current infections: {total_infections}
-"""
+======================================        
+        Step: {step_number}
+        Total interactions: {number_of_interactions} 
+        Total people dead: {dead_people}
+        Total vaccinated: {total_vaccinated}
+        Current infections: {total_infections}
+======================================  
+        """
         log.write(to_file)
         log.close()
 

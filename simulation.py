@@ -33,7 +33,7 @@ class Simulation(object):
         """
         population_list = []
 
-        poplulation_vaccinated = self.pop_size * vacc_percentage
+        poplulation_vaccinated = self.pop_size * self.vacc_percentage
         poplulation_vaccinated = int(poplulation_vaccinated)
         self.current_vaccinated = poplulation_vaccinated
 
@@ -78,7 +78,7 @@ class Simulation(object):
         return False
             
 
-    def run(self):
+    def run(self, virus):
         """
         starts the simulation and contains the main while loop
         """
@@ -171,5 +171,5 @@ if __name__ == "__main__":
     virus = Virus(virus_name, repro_num, mortality_rate)
     sim = Simulation(virus, pop_size, vacc_percentage, initial_infected)
 
-    sim.run()
+    sim.run(virus)
     
