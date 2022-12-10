@@ -92,18 +92,19 @@ class Simulation(object):
             self.time_step_counter += 1
             self.logger.log_interactions(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected)
 
-        print(f"Time steps: {self.time_step_counter}")
-        if not should_continue:
-            self.logger.final_log(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected, virus, self.pop_size, self.initial_infected, self.vacc_percentage, self.total_lives_saved_with_vaccine)
+            if not should_continue:
+                self.logger.final_log(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected, virus, self.pop_size, self.initial_infected, self.vacc_percentage, self.total_lives_saved_with_vaccine)
 
+        print(f"Time steps: {self.time_step_counter}")
         print(self.time_step_counter, self.total_interactions, self.total_dead, self.total_vaccinated, self.total_infected)    
+
 
     def random_person_grabber(self):
         """
         grabs random person from population and returns them if they're still alive
         """
         random_person_grab = random.choice(self.population)
-        while not random_person_grab.is_alive:
+        while not random_person_grab.is_alive and not random_person_grab.is_vaccinated and random_person_grab is None:
             random_person_grab = random.choice(self.population)
         return random_person_grab
 
@@ -114,19 +115,20 @@ class Simulation(object):
         """
         for person in self.population:
             if person.infection and person.is_alive:
-                for _ in range(101):
+                for _ in range(100):
                     self.interaction(person, self.random_person_grabber())
 
                 if person.did_survive_infection() == True:
                     # self.total_infected -= 1
+                    person.is_vaccinated = True
                     self.total_vaccinated += 1
 
                     # self.logger.log_infection_survival(person, True)
                 else:
                     person.is_alive = False
                     self.total_dead += 1
-                    self.dead_people_list.append(person)
-                    self.population.remove(person)
+                    # self.dead_people_list.append(person)
+                    # self.population.remove(person)
                     # self.total_vaccinated += 1
 
                     # self.logger.log_infection_survival(person, False)
@@ -142,19 +144,25 @@ class Simulation(object):
 
         if random_person.is_vaccinated == True:
             self.total_lives_saved_with_vaccine += 1
-        elif random_person.is_vaccinated == False and random_person.infection == None:
-            if random.random() < virus.repro_rate: # random num is chance of infection
+        elif random_person.is_vaccinated == False and random_person.infection == None and random_person.is_alive == True:
+            if random.random() < self.virus.repro_rate: # random num is chance of infection
                 self.newly_infected_list.append(random_person)
+                self.population.remove(random_person)
+                # self.total_infected += 1
 
     def _infect_newly_infected(self):
         """
         infects everyone in list then clears list
         """
         for person in self.newly_infected_list:
-            for person2 in self.population:
-                if person._id == person2._id:
-                    person2.infection = self.virus
-                    self.total_infected += 1
+            person.infection = self.virus
+            self.total_infected += 1
+            self.population.append(person)
+
+        # for person in self.newly_infected_list:
+        #     for person2 in self.population:
+        #         if person._id == person2._id:
+        #             person2.infection = self.virus
 
         self.newly_infected_list = []
 
@@ -162,16 +170,15 @@ class Simulation(object):
 if __name__ == "__main__":
     # Test your simulation here
     virus_name = "Sniffles"
-    repro_num = 0.5
-    mortality_rate = 0.12
-    # virus = Virus(virus_name, repro_num, mortality_rate)
+    repro_num = 0.4
+    mortality_rate = 0.3
 
     # Set some values used by the simulation
     pop_size = 1000
-    vacc_percentage = 0.1
+    vacc_percentage = 0.2
     initial_infected = 10
 
-    # Make a new instance of the imulation
+    # Make a new instance of the simulation
     virus = Virus(virus_name, repro_num, mortality_rate)
     sim = Simulation(virus, pop_size, vacc_percentage, initial_infected)
 
