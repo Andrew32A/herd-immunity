@@ -4,7 +4,6 @@ from person import Person
 from logger import Logger
 from virus import Virus
 
-
 class Simulation(object):
     def __init__(self, virus, pop_size, vacc_percentage, initial_infected=1):
         self.virus = virus
@@ -23,8 +22,9 @@ class Simulation(object):
         self.total_interactions = 0
         self.total_lives_saved_with_vaccine = 0
 
-        self.logger = Logger("test-logger.txt")
+        self.logger = Logger(f"{virus.name}-logger.txt")
         self.population = self._create_population()
+
 
     def _create_population(self):
         """
@@ -62,12 +62,9 @@ class Simulation(object):
             person = Person(id_count, False, self.virus)
             population_list.append(person)
 
-        vaccination_percentage = self.vacc_percentage * 100
-        virus_mortality = self.virus.mortality_rate * 100
-        virus_reproduction = self.virus.repro_rate * 100
-
         self.logger.write_metadata(self.pop_size, self.vacc_percentage, self.virus, self.initial_infected)
         return population_list
+
 
     def _simulation_should_continue(self):
         """
@@ -80,9 +77,9 @@ class Simulation(object):
             
 
     def run(self):
-        # This method starts the simulation. It should track the number of 
-        # steps the simulation has run and check if the simulation should 
-        # continue at the end of each step. 
+        """
+        starts the simulation and contains the main while loop
+        """
         
         should_continue = True
 
@@ -123,19 +120,13 @@ class Simulation(object):
                     person.is_vaccinated = True
                     self.total_vaccinated += 1
 
-                    # self.logger.log_infection_survival(person, True)
                 else:
                     person.is_alive = False
                     self.total_dead += 1
                     self.total_infected -= 1
-                    # self.dead_people_list.append(person)
-                    # self.population.remove(person)
-                    # self.total_vaccinated += 1
-
-                    # self.logger.log_infection_survival(person, False)
-
 
         self._infect_newly_infected()
+
 
     def interaction(self, infected_person, random_person):
         """
@@ -149,7 +140,6 @@ class Simulation(object):
             if random.random() < self.virus.repro_rate: # random num is chance of infection
                 self.newly_infected_list.append(random_person)
                 self.population.remove(random_person)
-                # self.total_infected += 1
 
     def _infect_newly_infected(self):
         """
@@ -159,11 +149,6 @@ class Simulation(object):
             person.infection = self.virus
             self.total_infected += 1
             self.population.append(person)
-
-        # for person in self.newly_infected_list:
-        #     for person2 in self.population:
-        #         if person._id == person2._id:
-        #             person2.infection = self.virus
 
         self.newly_infected_list = []
 

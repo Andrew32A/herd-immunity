@@ -6,14 +6,15 @@ class Logger(object):
         log = open(self.file_name, "w")
 
         log.write(f"""
-Initial population size: {pop_size}.
-Percentage vaccinated: {vacc_percentage}.
-Virus name: {virus.name}.
-Reproduction rate: {virus.repro_rate}.
-Virus mortality rate: {virus.mortality_rate}.
-Initial infected: {initial_infected}.
+Initial population size: {pop_size}
+Percentage vaccinated: {vacc_percentage}
+Virus name: {virus.name}
+Reproduction rate: {virus.repro_rate}
+Virus mortality rate: {virus.mortality_rate}
+Initial infected: {initial_infected}
 """)
         log.close()
+
 
     def log_interactions(self, step_number, number_of_interactions, dead_people, total_vaccinated, total_infections):
         log = open(self.file_name, "a")
@@ -26,6 +27,7 @@ Current infections: {total_infections}
 """
         log.write(to_file)
         log.close()
+
 
     def final_log(self, step_number, number_of_interactions, dead_people, total_vaccinated, total_infections, virus, pop_size, initial_infected, vacc_percentage, vaccine_saves):
         log = open("answers.txt", "w")
